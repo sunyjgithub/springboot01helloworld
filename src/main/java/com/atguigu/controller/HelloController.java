@@ -22,7 +22,7 @@ public class HelloController {
 
     @ResponseBody
     @RequestMapping("/persons")
-    public Person persons(){
+    public Person persons(String name){
 
         Person p=new Person();
         p.setAge("121");

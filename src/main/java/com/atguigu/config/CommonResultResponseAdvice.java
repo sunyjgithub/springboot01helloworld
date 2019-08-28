@@ -33,15 +33,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 *
 *
 * */
-@Configuration
-@EnableWebMvc
-public class UnifiedReturnConfig {
+@RestControllerAdvice(basePackages = "com.atguigu.controller")
+public class CommonResultResponseAdvice implements ResponseBodyAdvice<Object> {
 
-    private static Logger logger= LoggerFactory.getLogger(UnifiedReturnConfig.class);
+       private static Logger logger= LoggerFactory.getLogger(CommonResultResponseAdvice.class);
 
-    @RestControllerAdvice(basePackages = "com.atguigu.controller")
-    static class CommonResultResponseAdvice implements ResponseBodyAdvice<Object>{
-
+        //返回true，说明会调用下面的方法，对返回值进行包装
         @Override
         public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
             return true;
@@ -50,7 +47,7 @@ public class UnifiedReturnConfig {
         @Override
         public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
             logger.info("请求返回数据类型class={}", body.getClass().getName());
-
+            //将返回值统一包装成CommonResult对象
             CommonResult result=null;
 
             if(body instanceof CommonResult){
@@ -67,8 +64,7 @@ public class UnifiedReturnConfig {
                 return JSON.toJSONString(result);
             }
 
-
             return result;
         }
-    }
+
 }

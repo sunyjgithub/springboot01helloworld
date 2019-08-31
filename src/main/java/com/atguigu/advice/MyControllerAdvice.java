@@ -1,6 +1,7 @@
 package com.atguigu.advice;
 
 
+import com.atguigu.exception.BusinessException;
 import com.atguigu.exception.MyException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,19 +37,22 @@ public class MyControllerAdvice {
 
 
 
+    //一个ControllerAdvice中不能包含多个处理一个异常的ExceptionHandler，负责启动会报错
+
+
     /**
      * 全局异常捕捉处理
      * @param ex
      * @return
      */
-    @ResponseBody
-    @ExceptionHandler(value = Exception.class)
-    public Map errorHandler(Exception ex) {
+   /* @ResponseBody
+    @ExceptionHandler(value = BusinessException.class)
+    public Map errorHandler(BusinessException ex) {
         Map map = new HashMap();
         map.put("code", 100);
-        map.put("msg", ex.getMessage());
+        map.put("msg", ex.getErrorMsg());
         return map;
-    }
+    }*/
 
     /**
      * 拦截捕捉自定义异常 MyException.class
@@ -56,11 +60,11 @@ public class MyControllerAdvice {
      * @return
      */
     @ResponseBody
-    @ExceptionHandler(value = MyException.class)
-    public Map myErrorHandler(MyException ex) {
+    @ExceptionHandler
+    public Map myErrorHandler(BusinessException ex) {
         Map map = new HashMap();
-        map.put("code", ex.getCode());
-        map.put("msg", ex.getMsg());
+        map.put("code", ex.getErrorCode());
+        map.put("msg", ex.getErrorMsg());
         return map;
     }
 }

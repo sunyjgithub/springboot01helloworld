@@ -46,4 +46,14 @@ public class CommonResult<T> {
     public CommonResult(T resultBody) {
         this.resultBody = resultBody;
     }
+
+
+    public static CommonResult errorResult(String errorCode, String errorMsg){
+        CommonResult commonResult = new CommonResult();
+        commonResult.errorCode = errorCode;
+        commonResult.errorMsg = errorMsg;
+        commonResult.status = -1;
+        return commonResult;
+    }
+
 }
